@@ -3,7 +3,7 @@
     "name": "the-sett/elm-animate",
     "summary": "A simple animation package for Elm.",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "exposed-modules": [
         "Animate"
     ],
