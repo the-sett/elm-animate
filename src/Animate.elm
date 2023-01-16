@@ -1,5 +1,5 @@
 module Animate exposing
-    ( Timeline, timeline, static, staticIfInactive, value
+    ( Timeline, timeline, static, staticIfInactive, value, startValue, endValue
     , Animator, empty, animate
     , subscriptions, step
     )
@@ -28,7 +28,7 @@ function.
 
 # Build a timeline and get the animated value.
 
-@docs Timeline, timeline, static, staticIfInactive, value
+@docs Timeline, timeline, static, staticIfInactive, value, startValue, endValue
 
 
 # Build an animator of timelines.
@@ -161,10 +161,10 @@ animate getter setter (Animator isActive stepModel) =
 
                     else
                         let
-                            endValue =
+                            completeValue =
                                 interpolate start end 1.0
                         in
-                        setter (Complete { curValue = endValue }) model
+                        setter (Complete { curValue = completeValue }) model
                             |> stepModel nowMs
 
                 Complete _ ->
@@ -230,6 +230,36 @@ value tl =
 
         Running { curValue } ->
             curValue
+
+        Complete { curValue } ->
+            curValue
+
+
+{-| Gets the start value from a timeline.
+-}
+startValue : Timeline a -> a
+startValue tl =
+    case tl of
+        Ready { start } ->
+            start
+
+        Running { start } ->
+            start
+
+        Complete { curValue } ->
+            curValue
+
+
+{-| Gets the end value from a timeline.
+-}
+endValue : Timeline a -> a
+endValue tl =
+    case tl of
+        Ready { end } ->
+            end
+
+        Running { end } ->
+            end
 
         Complete { curValue } ->
             curValue
